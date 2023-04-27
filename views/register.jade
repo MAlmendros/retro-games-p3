@@ -1,0 +1,47 @@
+extends layout.jade
+
+block content
+    .align-items-center.container.d-flex.flex-column
+        .card.card-box.col-12.col-sm-10.col-md-6.p-0
+            .card-body 
+                form(role='form', action='/api/users', method='post')
+                    .align-items-center.d-flex.flex-column.text-center
+                        label.form-label.font-weight-bold(for='avatar') Avatar
+                        .form-group.mb-3.row.w-100
+                            .col-6.col-sm-4.col-lg-2
+                                label.form-label.font-weight-bold(for='avatar-1')
+                                    input(id='avatar-1', name='avatar', value='avatar-1', type='radio')
+                                    img.avatar-img(height='auto', width='100%', src='../images/avatar-1.jpg')
+                            .col-6.col-sm-4.col-lg-2
+                                label.form-label.font-weight-bold(for='avatar-2')
+                                    input(id='avatar-2', name='avatar', value='avatar-2', type='radio')
+                                    img.avatar-img(height='auto', width='100%', src='../images/avatar-2.jpg')
+                            .col-6.col-sm-4.col-lg-2
+                                label.form-label.font-weight-bold(for='avatar-3')
+                                    input(id='avatar-3', name='avatar', value='avatar-3', type='radio')
+                                    img.avatar-img(height='auto', width='100%', src='../images/avatar-3.jpg')
+                            .col-6.col-sm-4.col-lg-2
+                                label.form-label.font-weight-bold(for='avatar-4')
+                                    input(id='avatar-4', name='avatar', value='avatar-4', type='radio')
+                                    img.avatar-img(height='auto', width='100%', src='../images/avatar-4.jpg')
+                            .col-6.col-sm-4.col-lg-2
+                                label.form-label.font-weight-bold(for='avatar-5')
+                                    input(id='avatar-5', name='avatar', value='avatar-5', type='radio')
+                                    img.avatar-img(height='auto', width='100%', src='../images/avatar-5.jpg')
+                            .col-6.col-sm-4.col-lg-2
+                                label.form-label.font-weight-bold(for='avatar-6')
+                                    input(id='avatar-6', name='avatar', value='avatar-6', type='radio')
+                                    img.avatar-img(height='auto', width='100%', src='../images/avatar-6.jpg')
+                    .form-group.mb-3
+                        label.form-label.font-weight-bold(for='email') Correo electrónico 
+                        input.form-control(id='email', name='email', placeholder='Correo electrónico', type='email')
+                    .form-group.mb-3
+                        label.form-label.font-weight-bold(for='name') Nombre 
+                        input.form-control(id='name', name='name', placeholder='Nombre', type='text')
+                    .form-group.mb-3
+                        label.form-label.font-weight-bold(for='password') Contraseña 
+                        input.form-control(id='password', name='password', placeholder='Contraseña', type='password')
+                    .text-center
+                        button.btn.btn-primary.mt-3(type='submit') Registrarse
+        p.col-12.col-sm-10.col-md-6.mt-2.p-0.text-right ¿Ya estás registrado?
+            a(href='/login')  Inicia sesión.

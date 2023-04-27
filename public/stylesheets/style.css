@@ -1,8 +1,28 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  padding: 48px;
 }
 
-a {
-  color: #00B7FF;
+.avatar-img {
+  border-radius: 100%;
+}
+
+.card-box {
+  background-color: #EDEDED;
+  border-color: #000;
+}
+
+[type=radio] { 
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+[type=radio] + img {
+  cursor: pointer;
+}
+
+[type=radio]:checked + img {
+  outline: 4px solid #007BFF;
 }

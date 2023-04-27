@@ -1,0 +1,17 @@
+extends layout.jade
+
+block content
+    .container.d-flex.flex-column.align-items-center
+        .card.card-box.col-12.col-sm-10.col-md-6.p-0
+            .card-body 
+                form(role='form', action='/api/users/login', method='post')
+                    .form-group.mb-3 
+                        label.form-label.font-weight-bold(for='email') Correo electrónico 
+                        input.form-control(id='email', name='email', placeholder='Correo electrónico', type='email')
+                    .form-group.mb-3 
+                        label.form-label.font-weight-bold(for='password') Contraseña 
+                        input.form-control(id='password', name='password', placeholder='Contraseña', type='password')
+                    .text-center
+                        button.btn.btn-primary.mt-3(type='submit') Entrar
+        p.col-12.col-sm-10.col-md-6.mt-2.p-0.text-right ¿No estas registrado?
+            a(href='/register')  Regístrate ahora.
