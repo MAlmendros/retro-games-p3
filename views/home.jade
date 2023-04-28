@@ -1,5 +1,8 @@
 extends layout
 
 block content
-    .align-items-center.container.d-flex.flex-column
-      p HOME PAGE
+    .home-page.align-items-center.container.d-none.flex-column
+        p HOME PAGE
+
+    block scripts
+        script(src='/javascripts/home.js')

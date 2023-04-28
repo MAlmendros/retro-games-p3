@@ -3,12 +3,7 @@ const registerFormFieldsError = document.querySelectorAll('.form-field-error');
 const registerResponseError = document.querySelector('.response-error');
 const registerResponseErrorMessage = document.querySelector('.response-error-message');
 
-console.log('RegisterModule');
-
 registerForm.addEventListener('submit', (event) => {
-    console.log('registerForm');
-    console.log('------------------------');
-
     event.preventDefault();
 
     // Reseteamos los 'div' de mensajes de error del formulario.
@@ -42,7 +37,6 @@ registerForm.addEventListener('submit', (event) => {
     registerFormFieldsError[3].innerHTML = password === '' ? 'Este campo es requerido' : '';
 
     if (avatar !== null && email !== '' && username !== '' && password !== '') {
-        console.log(avatar, email, username, password);
         const body = { avatar, email, username, password };
 
         fetch('/api/users', {
@@ -88,6 +82,4 @@ registerForm.addEventListener('submit', (event) => {
             registerFormFieldsError[3].classList.add('d-flex');
         }
     }
-
-    console.log('------------------------');
 })
