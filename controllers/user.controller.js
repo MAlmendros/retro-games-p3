@@ -6,14 +6,20 @@ const login = async(request, response) => {
     if (!userData || !userData.email || !userData.password) {
         response
             .status(404)
-            .json({ message: `Fill in all fields.` });
+            .json({
+                status: 404,
+                message: `Rellene todos los datos.`
+            });
     } else {
         let selectedUser = users.find((user) => user.email === userData.email && user.password === userData.password);
 
         if (!selectedUser) {
             response
                 .status(404)
-                .json({ message: `User with email ${userData.email} not found or password incorrect.` });
+                .json({
+                    status: 404,
+                    message: `El usuario con correo electrónico "${userData.email}" no existe o la contraseña es incorrecta.`
+                });
         } else {
             response.status(200).json(selectedUser);
         }
@@ -34,7 +40,10 @@ const getUser = async(request, response) => {
     } else {
         response
             .status(404)
-            .json({ message: `User with id ${id} not found.` });
+            .json({
+                status: 404,
+                message: `El usuario con ID "${id}" no existe.`
+            });
     }
 }
 
@@ -46,7 +55,17 @@ const createUser = async(request, response) => {
     if (selectedUser) {
         response
             .status(404)
-            .json({ message: `This email is already registered.` });
+            .json({
+                status: 404,
+                message: `Este correo electrónico ya está registrado.`
+            });
+    } else if (!newUser || !newUser.avatar || !newUser.email || !newUser.username || !newUser.password) {
+        response
+            .status(404)
+            .json({
+                status: 404,
+                message: `Rellene todos los datos.`
+            });
     } else {
         const ids = users.map((user) => user.id);
         let id = Math.max(...ids) + 1;

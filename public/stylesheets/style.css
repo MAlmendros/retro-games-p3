@@ -12,6 +12,20 @@ body {
   border-color: #000;
 }
 
+.form-field-error {
+  color: #FF3333;
+  font-weight: bold;
+  padding: 10px 2px;
+}
+
+.response-error {
+  border: 2px solid #FF3333;
+  border-radius: 4px;
+  color: #FF3333;
+  font-weight: bold;
+  padding: 10px;
+}
+
 [type=radio] { 
   position: absolute;
   opacity: 0;

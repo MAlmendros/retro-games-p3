@@ -15,7 +15,10 @@ const getGame = async(request, response) => {
     } else {
         response
             .status(404)
-            .json({ message: `Game with id ${id} not found.` });
+            .json({
+                status: 404,
+                message: `El juego con ID "${id}" no existe.`
+            });
     }
 }
 
@@ -28,22 +31,34 @@ const addPlayer = async(request, response) => {
     if (!selectedGame) {
         response
             .status(404)
-            .json({ message: `Game with id ${gameId} not found.` });
+            .json({
+                status: 404,
+                message: `El juego con ID "${gameId}" no existe.`
+            });
     } else if (!selectedUser) {
         response
             .status(404)
-            .json({ message: `User with id ${userId} not found.` });
+            .json({
+                status: 404,
+                message: `El usuario con ID "${userId}" no existe.`
+            });
     } else {
         let selectedPlayer = selectedGame.players.find((player) => player.id === selectedUser.id);
 
         if (selectedPlayer) {
             response
                 .status(404)
-                .json({ message: `User with id ${userId} already in the game.` });
+                .json({
+                    status: 404,
+                    message: `El usuario con ID "${userId}" ya está en la sala de juego.`
+                });
         } else if (selectedGame.limit <= selectedGame.players.length) {
             response
                 .status(404)
-                .json({ message: `This game is already full.` });
+                .json({
+                    status: 404,
+                    message: `La sala de juego está llena.`
+                });
         } else {
             selectedGame.players.push(selectedUser);
 
@@ -61,11 +76,11 @@ const removePlayer = async(request, response) => {
     if (!selectedGame) {
         response
             .status(404)
-            .json({ message: `Game with id ${gameId} not found.` });
+            .json({ message: `El juego con ID "${gameId}" no existe.` });
     } else if (!selectedUser) {
         response
             .status(404)
-            .json({ message: `User with id ${userId} not found.` });
+            .json({ message: `El usuario con ID "${userId}" no existe.` });
     } else {
         let newPlayers = selectedGame.players.filter((player) => player.id !== selectedUser.id);
         selectedGame.players = newPlayers;
