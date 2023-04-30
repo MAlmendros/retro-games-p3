@@ -1,8 +1,7 @@
 header
-    nav.navbar.navbar-dark.bg-retro-games.text-center
-        a.navbar-brand.w-100(href="#")
+    nav.bg-retro-games.navbar.navbar-dark.px-4
+        a.navbar-brand(href="#")
             img.logo.d-inline-block(alt='', height='auto', width='72px', src='/images/logo.png')
             span.ml-2.logo-title RetroGames
 
-    block scripts
-        script(src='/javascripts/header.js')
+        button.btn.btn-primary(id='btn-logout') Logout
