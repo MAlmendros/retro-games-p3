@@ -1,7 +1,16 @@
+const header = document.querySelector('header');
 const loginForm = document.getElementById('login-form');
 const loginFormFieldsError = document.querySelectorAll('.form-field-error');
 const loginResponseError = document.querySelector('.response-error');
 const loginResponseErrorMessage = document.querySelector('.response-error-message');
+
+if (header !== null) {
+    header.classList.add('d-none');
+}
+
+if (window.localStorage.getItem('retroGamesUser') !== null) {
+    window.location.href = '/';
+}
 
 loginForm.addEventListener('submit', (event) => {
     event.preventDefault();

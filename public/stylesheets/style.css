@@ -1,42 +1,62 @@
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  padding: 48px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+header {
+    box-shadow: 0 -6px 10px 5px rgba(0,0,0,0.5);
+}
+
+main {
+    padding: 48px;
+}
+
+.logo {
+    border-radius: 100%;
+}
+    
+.logo-title {
+    color: #007824;
+    font-weight: bold;
+}
+
+.bg-retro-games {
+    background-color: #EDEDED;
 }
 
 .avatar-img {
-  border-radius: 100%;
+    border-radius: 100%;
 }
 
 .card-box {
-  background-color: #EDEDED;
-  border-color: #000;
+    background-color: #EDEDED;
+    border-color: #000;
 }
 
 .form-field-error {
-  color: #FF3333;
-  font-weight: bold;
-  padding: 10px 2px;
+    color: #FF3333;
+    font-weight: bold;
+    padding: 10px 2px;
 }
 
 .response-error {
-  border: 2px solid #FF3333;
-  border-radius: 4px;
-  color: #FF3333;
-  font-weight: bold;
-  padding: 10px;
+    border: 2px solid #FF3333;
+    border-radius: 4px;
+    color: #FF3333;
+    font-weight: bold;
+    padding: 10px;
 }
 
 [type=radio] { 
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
 [type=radio] + img {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 [type=radio]:checked + img {
-  outline: 4px solid #007BFF;
+    outline: 4px solid #007BFF;
 }
