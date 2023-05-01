@@ -9,7 +9,7 @@ block content
             .col-12.font-weight-bold.text-center 
                 p.welcome-message Bienvenido usuario
             .col-8.col-sm-4.col-md-3.col-lg-2.mb-3.mx-auto
-                img.avatar-home-img(height='auto', width='100%', src='/images/avatar-2.jpg')
+                img.avatar-drag-img(id='avatar', height='auto', width='100%', draggable='true', ondragstart='drag(event)', src='/images/avatar-2.jpg')
             .col-12.text-center 
                 p Arrastre su avatar a una sala de juego para entrar
 
@@ -17,22 +17,22 @@ block content
             .col-3
                 .card.card-box
                     .card-header.text-center SALA DE JUEGO 1
-                    .card-body
+                    .card-body(id='game-1', ondrop='drop(event, 1)', ondragover='allowDrop(event, 1)')
 
             .col-3
                 .card.card-box
                     .card-header.text-center SALA DE JUEGO 2
-                    .card-body
+                    .card-body(id='game-2', ondrop='drop(event, 2)', ondragover='allowDrop(event, 2)')
 
             .col-3  
                 .card.card-box
                     .card-header.text-center SALA DE JUEGO 3
-                    .card-body
+                    .card-body(id='game-3', ondrop='drop(event, 3)', ondragover='allowDrop(event, 3)')
 
             .col-3
                 .card.card-box
                     .card-header.text-center SALA DE JUEGO 4
-                    .card-body
+                    .card-body(id='game-4', ondrop='drop(event, 4)', ondragover='allowDrop(event, 4)')
 
     block scripts
         script(src='/javascripts/home.js')
