@@ -27,9 +27,18 @@ main {
     border-radius: 100%;
 }
 
+.avatar-home-img {
+    border: 4px solid #007BFF;
+    border-radius: 100%;
+}
+
 .card-box {
     background-color: #EDEDED;
     border-color: #000;
+}
+
+.card-header {
+    border-bottom-color: #000;
 }
 
 .form-field-error {
