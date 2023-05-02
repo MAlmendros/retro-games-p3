@@ -13,10 +13,8 @@ loginForm.addEventListener('submit', (event) => {
 
     // Reseteamos los 'div' de mensajes de error del formulario.
     loginFormFieldsError[0].innerHTML = '';
-    loginFormFieldsError[0].classList.remove('d-flex');
     loginFormFieldsError[0].classList.add('d-none');
     loginFormFieldsError[1].innerHTML = '';
-    loginFormFieldsError[1].classList.remove('d-flex');
     loginFormFieldsError[1].classList.add('d-none');
     
     // Reseteamos el 'div' de error de respuesta de la llamada de login.
@@ -59,12 +57,10 @@ loginForm.addEventListener('submit', (event) => {
     } else {
         if (email === '') {
             loginFormFieldsError[0].classList.remove('d-none');
-            loginFormFieldsError[0].classList.add('d-flex');
         }
 
         if (password === '') {
             loginFormFieldsError[1].classList.remove('d-none');
-            loginFormFieldsError[1].classList.add('d-flex');
         }
     }
 })

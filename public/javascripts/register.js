@@ -13,16 +13,12 @@ registerForm.addEventListener('submit', (event) => {
 
     // Reseteamos los 'div' de mensajes de error del formulario.
     registerFormFieldsError[0].innerHTML = null;
-    registerFormFieldsError[0].classList.remove('d-flex');
     registerFormFieldsError[0].classList.add('d-none');
     registerFormFieldsError[1].innerHTML = '';
-    registerFormFieldsError[1].classList.remove('d-flex');
     registerFormFieldsError[1].classList.add('d-none');
     registerFormFieldsError[2].innerHTML = '';
-    registerFormFieldsError[2].classList.remove('d-flex');
     registerFormFieldsError[2].classList.add('d-none');
     registerFormFieldsError[3].innerHTML = '';
-    registerFormFieldsError[3].classList.remove('d-flex');
     registerFormFieldsError[3].classList.add('d-none');
     
     // Reseteamos el 'div' de error de respuesta de la llamada de register.
@@ -68,22 +64,18 @@ registerForm.addEventListener('submit', (event) => {
     } else {
         if (avatar === null) {
             registerFormFieldsError[0].classList.remove('d-none');
-            registerFormFieldsError[0].classList.add('d-flex');
         }
 
         if (email === '') {
             registerFormFieldsError[1].classList.remove('d-none');
-            registerFormFieldsError[1].classList.add('d-flex');
         }
 
         if (username === '') {
             registerFormFieldsError[2].classList.remove('d-none');
-            registerFormFieldsError[2].classList.add('d-flex');
         }
 
         if (password === '') {
             registerFormFieldsError[3].classList.remove('d-none');
-            registerFormFieldsError[3].classList.add('d-flex');
         }
     }
 })
