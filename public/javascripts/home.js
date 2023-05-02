@@ -1,11 +1,12 @@
 const homeUserContainer = document.querySelector('.user-container');
 const homeAvatarDragImg = document.querySelector('.avatar-drag-img');
+const homeButtonPlay = document.querySelector('.button-play');
 const homeButtonLeave = document.querySelector('.button-leave');
 const homeWelcomeMessage = document.querySelector('.welcome-message');
 
-const homeGameContainer = document.querySelector('.game-container');
-const homeGameTitle = document.querySelectorAll('.game-title');
-const homeGameBody = document.querySelectorAll('.game-body');
+const homeRoomContainer = document.querySelector('.room-container');
+const homeRoomTitle = document.querySelectorAll('.room-title');
+const homeRoomBody = document.querySelectorAll('.room-body');
 
 const homeResponseError = document.querySelector('.response-error');
 const homeResponseErrorMessage = document.querySelector('.response-error-message');
@@ -20,7 +21,7 @@ if (window.localStorage.getItem('retroGamesUser') === null) {
     homeUserContainer.classList.remove('d-none');
     homeUserContainer.classList.add('d-flex');
 
-    getGames();
+    getRooms();
 }
 
 document.getElementById('btn-logout').addEventListener('click', () => {
@@ -28,11 +29,15 @@ document.getElementById('btn-logout').addEventListener('click', () => {
     window.location.href = '/login';
 });
 
+document.getElementById('btn-play').addEventListener('click', () => {
+    window.location.href = '/room';
+});
+
 document.getElementById('btn-leave').addEventListener('click', () => {
     const userInfo = JSON.parse(window.localStorage.getItem('retroGamesUser'));
-    const body = { gameId: userInfo.game, userId: userInfo.id };
+    const body = { roomId: userInfo.room, userId: userInfo.id };
 
-    fetch('/api/games/remove-player', {
+    fetch('/api/rooms/remove-player', {
         method: "POST",
         body: JSON.stringify(body),
         headers: new Headers({ 'Content-Type':  'application/json' })          
@@ -49,8 +54,8 @@ document.getElementById('btn-leave').addEventListener('click', () => {
             homeResponseError.classList.remove('d-flex');
             homeResponseError.classList.add('d-none');
 
-            window.localStorage.setItem('retroGamesUser', JSON.stringify({ ...userInfo, game: null }));
-            getGames();
+            window.localStorage.setItem('retroGamesUser', JSON.stringify({ ...userInfo, room: null }));
+            getRooms();
         }
     })
     .catch(error => {
@@ -68,13 +73,13 @@ function drag(event) {
     event.dataTransfer.setData("avatar", event.target.id);
 }
   
-function drop(event, gameId) {
+function drop(event, roomId) {
     event.preventDefault();
 
     const userInfo = JSON.parse(window.localStorage.getItem('retroGamesUser'));
-    const body = { gameId, userId: userInfo.id };
+    const body = { roomId, userId: userInfo.id };
 
-    fetch('/api/games/add-player', {
+    fetch('/api/rooms/add-player', {
         method: "POST",
         body: JSON.stringify(body),
         headers: new Headers({ 'Content-Type':  'application/json' })          
@@ -91,8 +96,8 @@ function drop(event, gameId) {
             homeResponseError.classList.remove('d-flex');
             homeResponseError.classList.add('d-none');
 
-            window.localStorage.setItem('retroGamesUser', JSON.stringify({ ...userInfo, game: gameId }));
-            getGames();
+            window.localStorage.setItem('retroGamesUser', JSON.stringify({ ...userInfo, room: roomId }));
+            getRooms();
         }
     })
     .catch(error => {
@@ -102,11 +107,12 @@ function drop(event, gameId) {
     });
 }
 
-function getGames() {
+function getRooms() {
     const userInfo = JSON.parse(window.localStorage.getItem('retroGamesUser'));
+    homeButtonPlay.classList.add('d-none');
     homeButtonLeave.classList.add('d-none');
 
-    fetch('/api/games', {
+    fetch('/api/rooms', {
         method: "GET",
         headers: new Headers({ 'Content-Type':  'application/json' })          
     })
@@ -117,42 +123,43 @@ function getGames() {
             homeResponseError.classList.remove('d-none');
             homeResponseError.classList.add('d-flex');
 
-            homeGameContainer.classList.remove('d-flex');
-            homeGameContainer.classList.add('d-none');
+            homeRoomContainer.classList.remove('d-flex');
+            homeRoomContainer.classList.add('d-none');
         }
         else {
-            response.forEach((game, index) => {
-                homeGameTitle[index].innerHTML = game.name;
+            response.forEach((room, index) => {
+                homeRoomTitle[index].innerHTML = room.name;
 
-                if (game.players.length > 0) {
-                    let gamePlayers = '';
+                if (room.players.length > 0) {
+                    let roomPlayers = '';
                     let color = 'blue';
 
-                    game.players.forEach(player => {
-                        gamePlayers += '<div class="row mb-3">';
-                        gamePlayers += '<div class="col-4">';
-                        gamePlayers += '<img class="avatar-drag-img-' + color +'" draggable="false" height="auto" width="100%" src="/images/' + player.avatar + '.jpg">';
-                        gamePlayers += '</div>';
-                        gamePlayers += '<div class="col-8 my-auto">';
-                        gamePlayers += '<p class="my-auto">' + player.username + '</p>';
-                        gamePlayers += '</div>';
-                        gamePlayers += '</div>';
+                    room.players.forEach(player => {
+                        roomPlayers += '<div class="row mb-3">';
+                        roomPlayers += '<div class="col-4">';
+                        roomPlayers += '<img class="avatar-drag-img-' + color +'" draggable="false" height="auto" width="100%" src="/images/' + player.avatar + '.jpg">';
+                        roomPlayers += '</div>';
+                        roomPlayers += '<div class="col-8 my-auto">';
+                        roomPlayers += '<p class="my-auto">' + player.username + '</p>';
+                        roomPlayers += '</div>';
+                        roomPlayers += '</div>';
 
                         color = color === 'blue' ? 'red' : 'blue';
 
                         if (player.id === userInfo.id) {
+                            homeButtonPlay.classList.remove('d-none');
                             homeButtonLeave.classList.remove('d-none');
                         }
                     });
 
-                    homeGameBody[index].innerHTML = gamePlayers;
+                    homeRoomBody[index].innerHTML = roomPlayers;
                 } else {
-                    homeGameBody[index].innerHTML = '';
+                    homeRoomBody[index].innerHTML = '';
                 }
             });
 
-            homeGameContainer.classList.remove('d-none');
-            homeGameContainer.classList.add('d-flex');
+            homeRoomContainer.classList.remove('d-none');
+            homeRoomContainer.classList.add('d-flex');
         }
     })
     .catch(error => {
@@ -160,7 +167,7 @@ function getGames() {
         homeResponseError.classList.remove('d-none');
         homeResponseError.classList.add('d-flex');
 
-        homeGameContainer.classList.remove('d-flex');
-        homeGameContainer.classList.add('d-none');
+        homeRoomContainer.classList.remove('d-flex');
+        homeRoomContainer.classList.add('d-none');
     });
 }

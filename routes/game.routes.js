@@ -10,10 +10,10 @@ router.get('/', gameController.getGames);
 // GET - Game ('/api/games/:id')
 router.get('/:id', gameController.getGame);
 
-// POST - Add player ('/api/games/add-player')
-router.post('/add-player', gameController.addPlayer);
+// POST - Create game ('/api/games')
+router.post('/', gameController.createGame);
 
-// POST - Remove player ('/api/games/remove-player')
-router.post('/remove-player', gameController.removePlayer);
+// DELETE - Delete game ('/api/games')
+router.post('/', gameController.deleteGame);
 
 module.exports = router;

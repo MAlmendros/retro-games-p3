@@ -38,7 +38,7 @@ main {
 }
 
 .avatar-drag-img-red {
-    border: 4px solid #ff0000;
+    border: 4px solid #DC3545;
     border-radius: 100%;
 }
 
@@ -52,20 +52,20 @@ main {
 }
 
 .form-field-error {
-    color: #FF3333;
+    color: #DC3545;
     font-weight: bold;
     padding: 10px 2px;
 }
 
 .response-error {
-    border: 2px solid #FF3333;
+    border: 2px solid #DC3545;
     border-radius: 4px;
-    color: #FF3333;
+    color: #DC3545;
     font-weight: bold;
     padding: 10px;
 }
 
-.game-body {
+.room-body {
     min-height: 210px;
 }
 

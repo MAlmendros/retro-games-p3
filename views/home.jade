@@ -11,7 +11,8 @@ block content
             .col-8.col-sm-4.col-md-3.col-lg-2.mb-3.mx-auto
                 img.avatar-drag-img(id='avatar', height='auto', width='100%', draggable='true', ondragstart='drag(event)', src='/images/avatar-2.jpg')
             .col-12.mb-3.text-center
-                button.btn.btn-primary.button-leave.d-none(id='btn-leave') Abandonar sala
+                button.btn.btn-primary.button-play.d-none.mx-1(id='btn-play') Entrar a la sala
+                button.btn.btn-danger.button-leave.d-none.mx-1(id='btn-leave') Abandonar sala
             .col-12.mb-3.text-center
                 p Arrastre su avatar a una sala de juego para entrar
             .col-12.col-sm-10.col-md-6.col-lg-4.d-none.mb-3.justify-content-center.response-error
@@ -20,26 +21,26 @@ block content
                     path(d='M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z')
                 p.response-error-message.ml-3.my-auto
 
-        .row.d-none.game-container
+        .row.d-none.room-container
             .col-12.col-sm-6.col-lg-3.mb-4
                 .card.card-box
-                    .card-header.game-title.text-center
-                    .card-body.game-body.pb-0(id='game-1', ondrop='drop(event, 1)', ondragover='allowDrop(event, 1)')
+                    .card-header.room-title.text-center
+                    .card-body.room-body.pb-0(id='room-1', ondrop='drop(event, 1)', ondragover='allowDrop(event, 1)')
 
             .col-12.col-sm-6.col-lg-3.mb-4
                 .card.card-box
-                    .card-header.game-title.text-center
-                    .card-body.game-body.pb-0(id='game-2', ondrop='drop(event, 2)', ondragover='allowDrop(event, 2)')
+                    .card-header.room-title.text-center
+                    .card-body.room-body.pb-0(id='room-2', ondrop='drop(event, 2)', ondragover='allowDrop(event, 2)')
 
             .col-12.col-sm-6.col-lg-3.mb-4  
                 .card.card-box
-                    .card-header.game-title.text-center
-                    .card-body.game-body.pb-0(id='game-3', ondrop='drop(event, 3)', ondragover='allowDrop(event, 3)')
+                    .card-header.room-title.text-center
+                    .card-body.room-body.pb-0(id='room-3', ondrop='drop(event, 3)', ondragover='allowDrop(event, 3)')
 
             .col-12.col-sm-6.col-lg-3.mb-4
                 .card.card-box
-                    .card-header.game-title.text-center
-                    .card-body.game-body.pb-0(id='game-4', ondrop='drop(event, 4)', ondragover='allowDrop(event, 4)')
+                    .card-header.room-title.text-center
+                    .card-body.room-body.pb-0(id='room-4', ondrop='drop(event, 4)', ondragover='allowDrop(event, 4)')
 
     block scripts
         script(src='/javascripts/home.js')
