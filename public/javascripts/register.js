@@ -57,7 +57,6 @@ registerForm.addEventListener('submit', (event) => {
                 registerResponseError.classList.add('d-flex');
             }
             else {
-                window.localStorage.setItem('retroGamesUser', JSON.stringify(response))
                 window.location.href = '/login';
             }
         })
