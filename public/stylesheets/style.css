@@ -32,6 +32,16 @@ main {
     border-radius: 100%;
 }
 
+.avatar-drag-img-blue {
+    border: 4px solid #007BFF;
+    border-radius: 100%;
+}
+
+.avatar-drag-img-red {
+    border: 4px solid #ff0000;
+    border-radius: 100%;
+}
+
 .card-box {
     background-color: #EDEDED;
     border-color: #000;

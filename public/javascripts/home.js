@@ -90,7 +90,7 @@ function drop(event, gameId) {
             homeResponseErrorMessage.innerHTML = '';
             homeResponseError.classList.remove('d-flex');
             homeResponseError.classList.add('d-none');
-            
+
             window.localStorage.setItem('retroGamesUser', JSON.stringify({ ...userInfo, game: gameId }));
             getGames();
         }
@@ -126,15 +126,19 @@ function getGames() {
 
                 if (game.players.length > 0) {
                     let gamePlayers = '';
+                    let color = 'blue';
+
                     game.players.forEach(player => {
                         gamePlayers += '<div class="row mb-3">';
                         gamePlayers += '<div class="col-4">';
-                        gamePlayers += '<img class="avatar-drag-img" draggable="false" height="auto" width="100%" src="/images/' + player.avatar + '.jpg">';
+                        gamePlayers += '<img class="avatar-drag-img-' + color +'" draggable="false" height="auto" width="100%" src="/images/' + player.avatar + '.jpg">';
                         gamePlayers += '</div>';
                         gamePlayers += '<div class="col-8 my-auto">';
                         gamePlayers += '<p class="my-auto">' + player.username + '</p>';
                         gamePlayers += '</div>';
                         gamePlayers += '</div>';
+
+                        color = color === 'blue' ? 'red' : 'blue';
 
                         if (player.id === userInfo.id) {
                             homeButtonLeave.classList.remove('d-none');
