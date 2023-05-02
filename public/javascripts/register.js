@@ -1,5 +1,6 @@
 const registerForm = document.getElementById('register-form');
 const registerFormFieldsError = document.querySelectorAll('.form-field-error');
+
 const registerResponseError = document.querySelector('.response-error');
 const registerResponseErrorMessage = document.querySelector('.response-error-message');
 

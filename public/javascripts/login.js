@@ -1,5 +1,6 @@
 const loginForm = document.getElementById('login-form');
 const loginFormFieldsError = document.querySelectorAll('.form-field-error');
+
 const loginResponseError = document.querySelector('.response-error');
 const loginResponseErrorMessage = document.querySelector('.response-error-message');
 
@@ -46,7 +47,7 @@ loginForm.addEventListener('submit', (event) => {
                 loginResponseError.classList.add('d-flex');
             }
             else {
-                window.localStorage.setItem('retroGamesUser', JSON.stringify(response))
+                window.localStorage.setItem('retroGamesUser', JSON.stringify(response));
                 window.location.href = '/';
             }
         })

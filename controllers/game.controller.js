@@ -23,7 +23,10 @@ const getGame = async(request, response) => {
 }
 
 const addPlayer = async(request, response) => {
-    const { gameId, userId } = request.params;
+    const { gameId, userId } = request.body;
+    console.log('addPlayer');
+    console.log('------------------------------');
+    console.log(gameId, userId);
 
     let selectedGame = games.find((game) => game.id === parseInt(gameId));
     let selectedUser = users.find((user) => user.id === parseInt(userId));
@@ -45,19 +48,34 @@ const addPlayer = async(request, response) => {
     } else {
         let selectedPlayer = selectedGame.players.find((player) => player.id === selectedUser.id);
 
+        let otherGameUser = false;
+        games.forEach(game => {
+            const onGame = game.players.find((player) => player.id === selectedUser.id);
+            if (onGame) {
+                otherGameUser = true;
+            }
+        });
+
         if (selectedPlayer) {
             response
                 .status(404)
                 .json({
                     status: 404,
-                    message: `El usuario con ID "${userId}" ya está en la sala de juego.`
+                    message: `El usuario "${selectedUser.username}" ya está en el juego "${selectedGame.name}".`
+                });
+        } else if (!selectedPlayer && otherGameUser) {
+            response
+                .status(404)
+                .json({
+                    status: 404,
+                    message: `El usuario "${selectedUser.username}" ya está en otro juego.`
                 });
         } else if (selectedGame.limit <= selectedGame.players.length) {
             response
                 .status(404)
                 .json({
                     status: 404,
-                    message: `La sala de juego está llena.`
+                    message: `El juego "${selectedGame.name}" está lleno.`
                 });
         } else {
             selectedGame.players.push(selectedUser);
@@ -68,7 +86,7 @@ const addPlayer = async(request, response) => {
 }
 
 const removePlayer = async(request, response) => {
-    const { gameId, userId } = request.params;
+    const { gameId, userId } = request.body;
 
     let selectedGame = games.find((game) => game.id === parseInt(gameId));
     let selectedUser = users.find((user) => user.id === parseInt(userId));

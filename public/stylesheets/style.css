@@ -55,6 +55,10 @@ main {
     padding: 10px;
 }
 
+.game-body {
+    min-height: 300px;
+}
+
 [type=radio] { 
     position: absolute;
     opacity: 0;

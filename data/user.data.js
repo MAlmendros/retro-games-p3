@@ -4,28 +4,28 @@ let users = [
         username: 'Marian Almendros',
         email: 'malmendros@uoc.edu',
         password: '123456',
-        avatar: 'avatar1'
+        avatar: 'avatar-3'
     },
     {
         id: 2,
         username: 'José Antonio Cardenal',
         email: 'jcardenal@uoc.edu',
         password: '123456',
-        avatar: 'avatar2'
+        avatar: 'avatar-2'
     },
     {
         id: 3,
         username: 'Jacobo Bajo',
         email: 'jbajog@uoc.edu',
         password: '123456',
-        avatar: 'avatar3'
+        avatar: 'avatar-1'
     },
     {
         id: 4,
         username: 'Gaspar Delgado',
         email: 'gdelgador@uoc.edu',
         password: '123456',
-        avatar: 'avatar4'
+        avatar: 'avatar-2'
     }
 ];
 
