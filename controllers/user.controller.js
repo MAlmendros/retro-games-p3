@@ -42,7 +42,7 @@ const getUser = async(request, response) => {
             .status(404)
             .json({
                 status: 404,
-                message: `El usuario con ID "${id}" no existe.`
+                message: `El usuario no existe.`
             });
     }
 }
