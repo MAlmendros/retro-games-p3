@@ -58,7 +58,7 @@ registerForm.addEventListener('submit', (event) => {
             }
             else {
                 window.localStorage.setItem('retroGamesUser', JSON.stringify(response))
-                window.location.href = '/';
+                window.location.href = '/login';
             }
         })
         .catch(error => {
