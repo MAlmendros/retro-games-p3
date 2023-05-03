@@ -38,7 +38,7 @@ registerForm.addEventListener('submit', (event) => {
     registerFormFieldsError[3].innerHTML = password === '' ? 'Este campo es requerido' : '';
 
     if (avatar !== null && email !== '' && username !== '' && password !== '') {
-        const body = { avatar, email, username, password };
+        const body = { username, email, password, avatar };
 
         fetch('/api/users', {
             method: "POST",

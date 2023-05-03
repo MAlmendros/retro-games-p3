@@ -48,7 +48,7 @@ const getUser = async(request, response) => {
 }
 
 const createUser = async(request, response) => {
-    const newUser = request.body;
+    let newUser = request.body;
 
     let selectedUser = users.find((user) => user.email === newUser.email);
 
@@ -70,7 +70,11 @@ const createUser = async(request, response) => {
         const ids = users.map((user) => user.id);
         let id = Math.max(...ids) + 1;
 
-        newUser.id = id;
+        newUser = {
+            id,
+            ...newUser,
+            game: null
+        };
         users.push(newUser);
 
         response.status(200).json(newUser);

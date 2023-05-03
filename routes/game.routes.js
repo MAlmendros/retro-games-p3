@@ -13,7 +13,10 @@ router.get('/:id', gameController.getGame);
 // POST - Create game ('/api/games')
 router.post('/', gameController.createGame);
 
+// PUT - Update game ('/api/games')
+router.put('/:id', gameController.updateGame);
+
 // DELETE - Delete game ('/api/games')
-router.post('/', gameController.deleteGame);
+router.delete('/:id', gameController.deleteGame);
 
 module.exports = router;
