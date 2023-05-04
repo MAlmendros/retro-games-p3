@@ -6,9 +6,9 @@ router.get('/', function(request, response, next) {
   response.render('home', { title: 'RetroGames' });
 });
 
-// GET - Game page ('/game')
-router.get('/game', function(request, response, next) {
-  response.render('game', { title: '¡A jugar!' });
+// GET - Room page ('/room')
+router.get('/room', function(request, response, next) {
+  response.render('room', { title: '¡A jugar!' });
 });
 
 // GET - Login page ('/login')

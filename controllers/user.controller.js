@@ -73,7 +73,7 @@ const createUser = async(request, response) => {
         newUser = {
             id,
             ...newUser,
-            game: null
+            room: {}
         };
         users.push(newUser);
 

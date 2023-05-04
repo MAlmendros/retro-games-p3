@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    .container.flex-column
+        .players-container.row.mb-3
+            .player.col-8.col-sm-4.col-md-3.col-lg-2.mb-3.mx-auto
+                .player-img.mb-3
+                    img.avatar-drag-img-blue(id='avatar-0', height='auto', width='100%', src='/images/avatar-0.jpg')
+                .player-name.font-weight-bold.text-center Jugador 1
+            .player.col-8.col-sm-4.col-md-3.col-lg-2.mb-3.mx-auto
+                .player-img.mb-3
+                    img.avatar-drag-img-red(id='avatar-1', height='auto', width='100%', src='/images/avatar-0.jpg')
+                .player-name.font-weight-bold.text-center Jugador 2
+        .room-container.row
+            .h1.mb-3.text-center.w-100 Sala de Juego
+
+    block scripts
+        script(src='/javascripts/room.js')

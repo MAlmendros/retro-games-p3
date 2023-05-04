@@ -4,10 +4,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var viewsRouter = require('./routes/views.routes');
 var gamesRouter = require('./routes/game.routes');
 var roomsRouter = require('./routes/room.routes');
 var usersRouter = require('./routes/user.routes');
+var viewsRouter = require('./routes/views.routes');
 
 var app = express();
 
@@ -21,25 +21,25 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', viewsRouter);
 app.use('/api/games', gamesRouter);
 app.use('/api/rooms', roomsRouter);
 app.use('/api/users', usersRouter);
+app.use('/', viewsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(request, response, next) {
-  next(createError(404));
+    next(createError(404));
 });
 
 // error handler
 app.use(function(error, request, response, next) {
-  // set locals, only providing error in development
-  response.locals.message = error.message;
-  response.locals.error = request.app.get('env') === 'development' ? error : {};
+    // set locals, only providing error in development
+    response.locals.message = error.message;
+    response.locals.error = request.app.get('env') === 'development' ? error : {};
 
-  // render the error page
-  response.status(error.status || 500);
-  response.render('error');
+    // render the error page
+    response.status(error.status || 500);
+    response.render('error');
 });
 
 module.exports = app;

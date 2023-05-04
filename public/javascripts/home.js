@@ -54,7 +54,7 @@ document.getElementById('btn-leave').addEventListener('click', () => {
             homeResponseError.classList.remove('d-flex');
             homeResponseError.classList.add('d-none');
 
-            window.localStorage.setItem('retroGamesUser', JSON.stringify({ ...userInfo, room: null }));
+            window.localStorage.setItem('retroGamesUser', JSON.stringify({ ...userInfo, room: {} }));
             getRooms();
         }
     })
@@ -76,8 +76,35 @@ function drag(event) {
 function drop(event, roomId) {
     event.preventDefault();
 
+    fetch(`/api/rooms/${roomId}`, {
+        method: "GET",
+        headers: new Headers({ 'Content-Type':  'application/json' })          
+    })
+    .then(data => data.json()) 
+    .then(response => {
+        if (response.status && response.status !== 200) {
+            homeResponseErrorMessage.innerHTML = response.message;
+            homeResponseError.classList.remove('d-none');
+            homeResponseError.classList.add('d-flex');
+        }
+        else {
+            homeResponseErrorMessage.innerHTML = '';
+            homeResponseError.classList.remove('d-flex');
+            homeResponseError.classList.add('d-none');
+
+            addPlayer(response);
+        }
+    })
+    .catch(error => {
+        homeResponseErrorMessage.innerHTML = error;
+        homeResponseError.classList.remove('d-none');
+        homeResponseError.classList.add('d-flex');
+    });
+}
+
+function addPlayer(room) {
     const userInfo = JSON.parse(window.localStorage.getItem('retroGamesUser'));
-    const body = { roomId, userId: userInfo.id };
+    const body = { roomId: room.id, userId: userInfo.id };
 
     fetch('/api/rooms/add-player', {
         method: "POST",
@@ -96,7 +123,7 @@ function drop(event, roomId) {
             homeResponseError.classList.remove('d-flex');
             homeResponseError.classList.add('d-none');
 
-            window.localStorage.setItem('retroGamesUser', JSON.stringify({ ...userInfo, room: roomId }));
+            window.localStorage.setItem('retroGamesUser', JSON.stringify({ ...userInfo, room }));
             getRooms();
         }
     })

@@ -5,7 +5,7 @@ let users = [
         email: 'malmendros@uoc.edu',
         password: '123456',
         avatar: 'avatar-3',
-        game: null
+        room: {}
     },
     {
         id: 2,
@@ -13,7 +13,7 @@ let users = [
         email: 'jcardenal@uoc.edu',
         password: '123456',
         avatar: 'avatar-2',
-        game: null
+        room: {}
     },
     {
         id: 3,
@@ -21,7 +21,7 @@ let users = [
         email: 'jbajog@uoc.edu',
         password: '123456',
         avatar: 'avatar-1',
-        game: null
+        room: {}
     },
     {
         id: 4,
@@ -29,7 +29,7 @@ let users = [
         email: 'gdelgador@uoc.edu',
         password: '123456',
         avatar: 'avatar-2',
-        game: null
+        room: {}
     }
 ];
 
