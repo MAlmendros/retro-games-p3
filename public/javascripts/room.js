@@ -45,7 +45,7 @@ function checkGame(userInfo) {
     .then(data => data.json()) 
     .then(response => {
         if (!response || (response.status && response.status !== 200)) {
-            // redirectTo();
+            redirectTo();
         }
         else {
             if (response.status === 200) {
@@ -128,8 +128,9 @@ socket.on('start', (game) => {
     }
 
     if (playersCount === 2) {
+        roomBoard.classList.add('d-none');
+        
         setTimeout(() => {
-            roomPlayerInfo.classList.remove('d-none');
             roomPlayerInfo.innerHTML = '¡Preparados!';
 
             setTimeout(() => {
