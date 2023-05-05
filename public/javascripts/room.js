@@ -2,6 +2,9 @@ const roomPlayer = document.querySelectorAll('.player');
 const roomPlayerName = document.querySelectorAll('.player-name');
 const roomPlayerImg = document.querySelectorAll('.player-img');
 
+const roomBoard = document.querySelectorAll('.board');
+const roomBoardCell = document.querySelectorAll('.board-cell');
+
 const colors = ['blue', 'red'];
 
 const socket = io();
@@ -12,7 +15,7 @@ if (window.localStorage.getItem('retroGamesUser') === null) {
     const userInfo = JSON.parse(window.localStorage.getItem('retroGamesUser'));
     
     if (!userInfo.room || !userInfo.room.id) {
-        // redirectTo();
+        redirectTo();
     } else {
         checkGame(userInfo);
     }
@@ -21,6 +24,14 @@ if (window.localStorage.getItem('retroGamesUser') === null) {
 function redirectTo(path = '/') {
     window.location.href = path;
 }
+
+var canvasList = document.querySelectorAll('.cell canvas');
+
+canvasList.forEach((canvas) => {
+    const context = canvas.getContext("2d");
+    context.fillStyle = '#FFF';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+});
 
 function checkGame(userInfo) {
     fetch(`/api/games/${userInfo.room.id}`, {
@@ -41,7 +52,7 @@ function checkGame(userInfo) {
         }
     })
     .catch(error => {
-        // redirectTo();
+        redirectTo();
     });
 }
 

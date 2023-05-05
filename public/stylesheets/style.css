@@ -69,6 +69,23 @@ main {
     min-height: 210px;
 }
 
+.room-board {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.cell {
+    border: 4px solid #000;
+    height: calc((100% / 5) - 16px);
+    margin: 8px;
+    width: calc((100% / 5) - 16px);
+}
+
+.cell canvas {
+    width: 100%;
+    height: 100%;
+}
+
 [type=radio] { 
     position: absolute;
     opacity: 0;
