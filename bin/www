@@ -25,11 +25,11 @@ var server = http.createServer(app);
 const io = new Server(server);
 
 io.on('connection', (socket) => {
+    socket.on('home', (rooms) => {
+        io.sockets.emit('home', (rooms))
+    });
+
     socket.on('start', (game) => {
-        console.log('Ole');
-        console.log('------------------');
-        console.log(game);
-        console.log('------------------');
         io.sockets.emit('start', (game))
     });
 });

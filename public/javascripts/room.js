@@ -112,7 +112,7 @@ socket.on('start', (game) => {
         console.log('Dentro 1');
         console.log(game.players[1]);
 
-        roomPlayerName[0].innerHTML = game.players[1].username;
+        roomPlayerName[1].innerHTML = game.players[1].username;
         document.getElementById('avatar-1').setAttribute('src', '/images/' + game.players[1].avatar + '.jpg');
         roomPlayer[1].classList.remove('d-none');
     }

@@ -11,6 +11,8 @@ const homeRoomBody = document.querySelectorAll('.room-body');
 const homeResponseError = document.querySelector('.response-error');
 const homeResponseErrorMessage = document.querySelector('.response-error-message');
 
+const socket = io();
+
 if (window.localStorage.getItem('retroGamesUser') === null) {
     window.location.href = '/login';
 } else {
@@ -35,7 +37,7 @@ document.getElementById('btn-play').addEventListener('click', () => {
 
 document.getElementById('btn-leave').addEventListener('click', () => {
     const userInfo = JSON.parse(window.localStorage.getItem('retroGamesUser'));
-    const body = { roomId: userInfo.room, userId: userInfo.id };
+    const body = { roomId: userInfo.room.id, userId: userInfo.id };
 
     fetch('/api/rooms/remove-player', {
         method: "POST",
@@ -154,39 +156,7 @@ function getRooms() {
             homeRoomContainer.classList.add('d-none');
         }
         else {
-            response.forEach((room, index) => {
-                homeRoomTitle[index].innerHTML = room.name;
-
-                if (room.players.length > 0) {
-                    let roomPlayers = '';
-                    let color = 'blue';
-
-                    room.players.forEach(player => {
-                        roomPlayers += '<div class="row mb-3">';
-                        roomPlayers += '<div class="col-4">';
-                        roomPlayers += '<img class="avatar-drag-img-' + color +'" draggable="false" height="auto" width="100%" src="/images/' + player.avatar + '.jpg">';
-                        roomPlayers += '</div>';
-                        roomPlayers += '<div class="col-8 my-auto">';
-                        roomPlayers += '<p class="my-auto">' + player.username + '</p>';
-                        roomPlayers += '</div>';
-                        roomPlayers += '</div>';
-
-                        color = color === 'blue' ? 'red' : 'blue';
-
-                        if (player.id === userInfo.id) {
-                            homeButtonPlay.classList.remove('d-none');
-                            homeButtonLeave.classList.remove('d-none');
-                        }
-                    });
-
-                    homeRoomBody[index].innerHTML = roomPlayers;
-                } else {
-                    homeRoomBody[index].innerHTML = '';
-                }
-            });
-
-            homeRoomContainer.classList.remove('d-none');
-            homeRoomContainer.classList.add('d-flex');
+            socket.emit('home', (response));
         }
     })
     .catch(error => {
@@ -198,3 +168,41 @@ function getRooms() {
         homeRoomContainer.classList.add('d-none');
     });
 }
+
+socket.on('home', (rooms) => {
+    const userInfo = JSON.parse(window.localStorage.getItem('retroGamesUser'));
+    
+    rooms.forEach((room, index) => {
+        homeRoomTitle[index].innerHTML = room.name;
+
+        if (room.players.length > 0) {
+            let roomPlayers = '';
+            let color = 'blue';
+
+            room.players.forEach(player => {
+                roomPlayers += '<div class="row mb-3">';
+                roomPlayers += '<div class="col-4">';
+                roomPlayers += '<img class="avatar-drag-img-' + color +'" draggable="false" height="auto" width="100%" src="/images/' + player.avatar + '.jpg">';
+                roomPlayers += '</div>';
+                roomPlayers += '<div class="col-8 my-auto">';
+                roomPlayers += '<p class="my-auto">' + player.username + '</p>';
+                roomPlayers += '</div>';
+                roomPlayers += '</div>';
+
+                color = color === 'blue' ? 'red' : 'blue';
+
+                if (player.id === userInfo.id) {
+                    homeButtonPlay.classList.remove('d-none');
+                    homeButtonLeave.classList.remove('d-none');
+                }
+            });
+
+            homeRoomBody[index].innerHTML = roomPlayers;
+        } else {
+            homeRoomBody[index].innerHTML = '';
+        }
+    });
+
+    homeRoomContainer.classList.remove('d-none');
+    homeRoomContainer.classList.add('d-flex');
+});
