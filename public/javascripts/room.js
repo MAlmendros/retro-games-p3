@@ -1,9 +1,9 @@
 const roomPlayer = document.querySelectorAll('.player');
 const roomPlayerName = document.querySelectorAll('.player-name');
 const roomPlayerImg = document.querySelectorAll('.player-img');
+const roomPlayerInfo = document.querySelector('.player-info');
 
-const roomBoard = document.querySelectorAll('.board');
-const roomBoardCell = document.querySelectorAll('.board-cell');
+const roomBoard = document.querySelector('.room-board');
 
 const colors = ['blue', 'red'];
 
@@ -27,10 +27,14 @@ function redirectTo(path = '/') {
 
 var canvasList = document.querySelectorAll('.cell canvas');
 
-canvasList.forEach((canvas) => {
+canvasList.forEach((canvas, index) => {
     const context = canvas.getContext("2d");
     context.fillStyle = '#FFF';
     context.fillRect(0, 0, canvas.width, canvas.height);
+
+    canvas.addEventListener('mousedown', (event) => {
+        console.log(event, index + 1);
+    });
 });
 
 function checkGame(userInfo) {
@@ -70,14 +74,14 @@ function createGame(userInfo) {
     .then(data => data.json()) 
     .then(response => {
         if (response.status && response.status !== 200) {
-            // redirectTo();
+            redirectTo();
         }
         else {
             socket.emit('start', (response));
         }
     })
     .catch(error => {
-        // redirectTo();
+        redirectTo();
     });
 }
 
@@ -95,37 +99,47 @@ function updateGame(userInfo) {
     .then(data => data.json()) 
     .then(response => {
         if (response.status && response.status !== 200) {
-            // redirectTo();
+            redirectTo();
         }
         else {
             socket.emit('start', (response));
         }
     })
     .catch(error => {
-        // redirectTo();
+        redirectTo();
     });
 }
 
 socket.on('start', (game) => {
-    console.log('Aquí estamos');
-    console.log(game);
+    let playersCount = 0;
 
     if (game && game.players && game.players[0].id) {
-        console.log('Dentro 0');
-        console.log(game.players[0]);
-
         roomPlayerName[0].innerHTML = game.players[0].username;
         document.getElementById('avatar-0').setAttribute('src', '/images/' + game.players[0].avatar + '.jpg');
         roomPlayer[0].classList.remove('d-none');
+        playersCount++;
     }
 
     if (game && game.players && game.players[1].id) {
-        console.log('Dentro 1');
-        console.log(game.players[1]);
-
         roomPlayerName[1].innerHTML = game.players[1].username;
         document.getElementById('avatar-1').setAttribute('src', '/images/' + game.players[1].avatar + '.jpg');
         roomPlayer[1].classList.remove('d-none');
+        playersCount++;
     }
 
+    if (playersCount === 2) {
+        setTimeout(() => {
+            roomPlayerInfo.classList.remove('d-none');
+            roomPlayerInfo.innerHTML = '¡Preparados!';
+
+            setTimeout(() => {
+                roomPlayerInfo.innerHTML = '¡Listos!';
+
+                setTimeout(() => {
+                    roomPlayerInfo.innerHTML = '¡Ya!';
+                    roomBoard.classList.remove('d-none');
+                }, 1000);
+            }, 1000);
+        }, 1000);
+    }
 })

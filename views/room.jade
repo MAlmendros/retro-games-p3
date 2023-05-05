@@ -11,12 +11,11 @@ block content
                 .player-img.mb-3
                     img.avatar-drag-img-red(id='avatar-1', height='auto', width='100%', src='/images/avatar-0.jpg')
                 .player-name.font-weight-bold.text-center Jugador 2
-        .room-title.row
-            .h1.mb-3.text-center.w-100 Sala de Juego
-        .room-board.row.mx-6
+            .player-info.h2.d-none.mb-3.text-center.w-100
+        .room-board.d-none.row
                 - for (var i = 0; i < 25; i++)
                     .cell
-                        canvas(height='100%', width='100%')
+                        canvas(id=`canvas-${i}`, height='100%', width='100%')
 
     block scripts
         script(src='/javascripts/room.js')
