@@ -32,6 +32,10 @@ io.on('connection', (socket) => {
     socket.on('start', (game) => {
         io.sockets.emit('start', (game))
     });
+
+    socket.on('game', (cellInfo) => {
+        io.sockets.emit('game', (cellInfo))
+    });
 });
 
 /**

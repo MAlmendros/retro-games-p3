@@ -1,3 +1,5 @@
+
+const { cells } = require("../data/cell.data");
 const { games } = require("../data/game.data");
 const { rooms } = require("../data/room.data");
 
@@ -61,11 +63,14 @@ const createGame = async(request, response) => {
             players: [{}, {}]
         };
 
-        const index = selectedRoom.players.findIndex((player) => player.id === userId);
-        newGame.players[index] = {
-            id: selectedRoom.players[index].id,
-            username: selectedRoom.players[index].username,
-            avatar: selectedRoom.players[index].avatar
+        const iPlayer = selectedRoom.players.findIndex((player) => player.id === userId);
+        newGame.players[iPlayer] = {
+            id: selectedRoom.players[iPlayer].id,
+            username: selectedRoom.players[iPlayer].username,
+            avatar: selectedRoom.players[iPlayer].avatar,
+            color: iPlayer === 0 ? '#007BFF' : '#DC3545',
+            cells: [],
+            score: 0
         };
 
         games.push(newGame);
@@ -98,18 +103,94 @@ const updateGame = async(request, response) => {
         const selectedRoom = rooms.find((room) => room.id === roomId);
         let updateGame = selectedGame;
 
-        const index = selectedRoom.players.findIndex((player) => player.id === userId);
-        updateGame.players[index] = {
-            id: selectedRoom.players[index].id,
-            username: selectedRoom.players[index].username,
-            avatar: selectedRoom.players[index].avatar
+        const iPlayer = selectedRoom.players.findIndex((player) => player.id === userId);
+        updateGame.players[iPlayer] = {
+            id: selectedRoom.players[iPlayer].id,
+            username: selectedRoom.players[iPlayer].username,
+            avatar: selectedRoom.players[iPlayer].avatar,
+            color: iPlayer === 0 ? '#007BFF' : '#DC3545',
+            cells: [],
+            score: 0,
         };
 
 
-        let indexG = games.findIndex(game => game.id === selectedGame.id);
-        games[indexG] = updateGame;
+        let iGame = games.findIndex(game => game.id === selectedGame.id);
+        games[iGame] = updateGame;
 
         response.status(200).json(updateGame);
+    }
+}
+
+const conquerCell = async(request, response) => {
+    const gameId = request.params.id;
+    const { userId, cellId } = request.body;
+
+    const selectedGame = games.find((game) => game.id === parseInt(gameId));
+
+    if (!selectedGame) {
+        response
+            .status(404)
+            .json({
+                status: 404,
+                message: `No existe ningún juego en curso en esa sala de juego.`
+            });
+    } else {
+        let selectedPlayer = selectedGame.players.find((player) => player.id === userId);
+
+        if (!selectedPlayer) {
+            response
+                .status(404)
+                .json({
+                    status: 404,
+                    message: `El jugador no ha sido encontrado en la sala de juego.`
+                });
+        } else {
+            const iPlayer = selectedGame.players.findIndex((player) => player.id === userId);
+            const iRival = selectedGame.players.findIndex((player) => player.id !== userId);
+
+            const controlRival = selectedGame.players[iRival].cells.includes(cellId);
+            const controlLength = selectedGame.players[iPlayer].cells.length === 0;
+            let controlAdjacent = selectedGame.players[iPlayer].cells.filter((cell) => cells[`${cell}`].includes(cellId)).length;
+            
+            console.log(controlRival);
+            console.log(controlLength);
+            console.log(controlAdjacent);
+
+            if (controlRival) {
+                response
+                    .status(404)
+                    .json({
+                        status: 404,
+                        message: `Esta celda ya ha sido conquistada por otro jugador`
+                    });
+            } else if (!(controlLength || controlAdjacent)) {
+                response
+                    .status(404)
+                    .json({
+                        status: 404,
+                        message: `Para conquistar esta celda necesitas tener en tu poder otra adyacente.`
+                    });
+            } else {
+                let updateGame = selectedGame;
+                updateGame.players[iPlayer] = {
+                    ...selectedPlayer,
+                    cells: [...selectedPlayer.cells, cellId],
+                    score: selectedPlayer.score + 1
+                };
+        
+                let iGame = games.findIndex(game => game.id === selectedGame.id);
+                games[iGame] = updateGame;
+
+                response
+                    .status(200)
+                    .json({
+                        cellId,
+                        scoreIndex: iPlayer,
+                        color: selectedPlayer.color,
+                        score: selectedPlayer.score + 1
+                    });
+            }
+        }
     }
 }
 
@@ -126,9 +207,9 @@ const deleteGame = async(request, response) => {
                 message: `No existe ningún juego en curso en esa sala de juego.`
             });
     } else {
-        let index = games.findIndex(game => game.id === selectedGame.id);
+        let iGame = games.findIndex((game) => game.id === selectedGame.id);
 
-        if (index === null) {
+        if (iGame === null) {
             response
                 .status(404)
                 .json({
@@ -136,7 +217,7 @@ const deleteGame = async(request, response) => {
                     message: `Ha ocurrido un error inesperado.`
                 });
         } else {
-            games.splice(index, 1);
+            games.splice(iGame, 1);
 
             response.status(200).json({
                 status: 200,
@@ -151,3 +232,4 @@ module.exports.getGame = getGame;
 module.exports.createGame = createGame;
 module.exports.updateGame = updateGame;
 module.exports.deleteGame = deleteGame;
+module.exports.conquerCell = conquerCell;

@@ -2,6 +2,7 @@ const roomPlayer = document.querySelectorAll('.player');
 const roomPlayerName = document.querySelectorAll('.player-name');
 const roomPlayerImg = document.querySelectorAll('.player-img');
 const roomPlayerInfo = document.querySelector('.player-info');
+const roomPlayerScore = document.querySelectorAll('.player-score');
 
 const roomBoard = document.querySelector('.room-board');
 
@@ -28,18 +29,18 @@ function redirectTo(path = '/') {
 var canvasList = document.querySelectorAll('.cell canvas');
 
 canvasList.forEach((canvas, index) => {
-    const context = canvas.getContext("2d");
+    const context = canvas.getContext('2d');
     context.fillStyle = '#FFF';
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     canvas.addEventListener('mousedown', (event) => {
-        console.log(event, index + 1);
+        conquerCell(index + 1);
     });
 });
 
 function checkGame(userInfo) {
     fetch(`/api/games/${userInfo.room.id}`, {
-        method: "GET",
+        method: 'GET',
         headers: new Headers({ 'Content-Type':  'application/json' })          
     })
     .then(data => data.json()) 
@@ -67,7 +68,7 @@ function createGame(userInfo) {
     };
 
     fetch('/api/games', {
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(body),
         headers: new Headers({ 'Content-Type':  'application/json' }) 
     })
@@ -92,7 +93,7 @@ function updateGame(userInfo) {
     };
 
     fetch(`/api/games/${userInfo.room.id}`, {
-        method: "PUT",
+        method: 'PUT',
         body: JSON.stringify(body),
         headers: new Headers({ 'Content-Type':  'application/json' }) 
     })
@@ -103,6 +104,30 @@ function updateGame(userInfo) {
         }
         else {
             socket.emit('start', (response));
+        }
+    })
+    .catch(error => {
+        redirectTo();
+    });
+}
+
+function conquerCell(cellId) {
+    const userInfo = JSON.parse(window.localStorage.getItem('retroGamesUser'));
+
+    const body = {
+        userId: userInfo.id,
+        cellId
+    };
+
+    fetch(`/api/games/${userInfo.room.id}/conquer-cell`, {
+        method: 'PUT',
+        body: JSON.stringify(body),
+        headers: new Headers({ 'Content-Type':  'application/json' }) 
+    })
+    .then(data => data.json()) 
+    .then(response => {
+        if (!response.status) {
+            socket.emit('game', (response));
         }
     })
     .catch(error => {
@@ -143,4 +168,24 @@ socket.on('start', (game) => {
             }, 1000);
         }, 1000);
     }
-})
+});
+
+socket.on('game', (cellInfo) => {
+    console.log('cellInfo');
+    console.log('---------------------------');
+    console.log(cellInfo);
+    console.log('---------------------------');
+
+    // document.getElementById(`canvas-${cellInfo.cellId - 1}`).classList.add(`cell-${cellInfo.color}`);
+
+    const canvas = canvasList[cellInfo.cellId - 1];
+    let context = canvas.getContext('2d');
+    context.fillStyle = cellInfo.color;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    canvas.addEventListener('mousedown', (event) => {
+        conquerCell(cellInfo.cellId + 1);
+    });
+
+    roomPlayerScore[cellInfo.scoreIndex].innerHTML = `${cellInfo.score} (${cellInfo.score * 4}%)`;
+});

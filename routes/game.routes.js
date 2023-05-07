@@ -16,6 +16,9 @@ router.post('/', gameController.createGame);
 // PUT - Update game ('/api/games')
 router.put('/:id', gameController.updateGame);
 
+// PUT - Conquer cell ('/api/games')
+router.put('/:id/conquer-cell', gameController.conquerCell);
+
 // DELETE - Delete game ('/api/games')
 router.delete('/:id', gameController.deleteGame);
 
