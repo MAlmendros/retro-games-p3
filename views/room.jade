@@ -14,6 +14,8 @@ block content
                 h3.score-red.player-score.font-weight-bold.text-center 0 (0%)
                 .player-name.font-weight-bold.mb-3.text-center Jugador 2
             h4.player-info.font-weight-bold.mb-3.text-center.w-100 Esperando a otros jugadores...
+            .button-leave.col-12.d-none.mb-3.text-center
+                button.btn.btn-primary.mx-1(id='btn-leave') Salir del juego
         .room-board.d-none.row
                 - for (var i = 0; i < 25; i++)
                     .cell

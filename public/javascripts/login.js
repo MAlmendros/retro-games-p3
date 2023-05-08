@@ -33,7 +33,7 @@ loginForm.addEventListener('submit', (event) => {
         const body = { email, password };
 
         fetch('/api/users/login', {
-            method: "POST",
+            method: 'POST',
             body: JSON.stringify(body),
             headers: new Headers({ 'Content-Type':  'application/json' })          
         })

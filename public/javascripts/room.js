@@ -3,7 +3,7 @@ const roomPlayerName = document.querySelectorAll('.player-name');
 const roomPlayerImg = document.querySelectorAll('.player-img');
 const roomPlayerInfo = document.querySelector('.player-info');
 const roomPlayerScore = document.querySelectorAll('.player-score');
-
+const roomButtonLeave = document.querySelector('.button-leave');
 const roomBoard = document.querySelector('.room-board');
 
 const colors = ['blue', 'red'];
@@ -135,6 +135,37 @@ function conquerCell(cellId) {
     });
 }
 
+document.getElementById('btn-leave').addEventListener('click', () => {
+    const userInfo = JSON.parse(window.localStorage.getItem('retroGamesUser'));
+    const body = { roomId: userInfo.room.id, userId: userInfo.id };
+    const gameId = userInfo.room.id;
+
+    fetch(`/api/games/${gameId}`, {
+        method: 'DELETE',
+        body: JSON.stringify(body),
+        headers: new Headers({ 'Content-Type':  'application/json' })          
+    })
+    .then(data => data.json()) 
+    .then(response => {
+        if (response.status === 200) {
+            fetch('/api/rooms/remove-player', {
+                method: 'POST',
+                body: JSON.stringify(body),
+                headers: new Headers({ 'Content-Type':  'application/json' })          
+            })
+            .then(data => data.json()) 
+            .then(response => {
+                if (!response.status) {
+                    window.localStorage.setItem('retroGamesUser', JSON.stringify({ ...userInfo, room: {} }));
+                    window.location.href = '/';
+                }
+            })
+            .catch(error => {});
+        }
+    })
+    .catch(error => {});
+});
+
 socket.on('start', (game) => {
     let playersCount = 0;
 
@@ -174,9 +205,6 @@ socket.on('game', (info) => {
     const { game, cellId, iPlayer } = info;
     const player = game.players[iPlayer];
 
-    console.log('game');
-    console.log('-------------------');
-
     const canvas = canvasList[cellId - 1];
     let context = canvas.getContext('2d');
     context.fillStyle = player.color;
@@ -187,15 +215,12 @@ socket.on('game', (info) => {
     const scores = game.players.map((player) => player.score);
     const totalScore = scores[0] + scores[1];
 
-    console.log(scores);
-
     if (totalScore === 25) {
         const index = scores[0] > scores[1] ? 0 : 1;
         const color = index === 0 ? 'blue' : 'red';
         const winner = game.players[index];
 
         roomPlayerInfo.innerHTML = `¡El juego ha finalizado! Ganador: <span class='score-${color}'>${winner.username}</span>.`;
+        roomButtonLeave.classList.remove('d-none');
     }
-
-    console.log('-------------------');
 });

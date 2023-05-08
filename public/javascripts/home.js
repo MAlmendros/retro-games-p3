@@ -40,7 +40,7 @@ document.getElementById('btn-leave').addEventListener('click', () => {
     const body = { roomId: userInfo.room.id, userId: userInfo.id };
 
     fetch('/api/rooms/remove-player', {
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(body),
         headers: new Headers({ 'Content-Type':  'application/json' })          
     })
@@ -72,14 +72,14 @@ function allowDrop(event) {
 }
   
 function drag(event) {
-    event.dataTransfer.setData("avatar", event.target.id);
+    event.dataTransfer.setData('avatar', event.target.id);
 }
   
 function drop(event, roomId) {
     event.preventDefault();
 
     fetch(`/api/rooms/${roomId}`, {
-        method: "GET",
+        method: 'GET',
         headers: new Headers({ 'Content-Type':  'application/json' })          
     })
     .then(data => data.json()) 
@@ -109,7 +109,7 @@ function addPlayer(room) {
     const body = { roomId: room.id, userId: userInfo.id };
 
     fetch('/api/rooms/add-player', {
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(body),
         headers: new Headers({ 'Content-Type':  'application/json' })          
     })
@@ -142,7 +142,7 @@ function getRooms() {
     homeButtonLeave.classList.add('d-none');
 
     fetch('/api/rooms', {
-        method: "GET",
+        method: 'GET',
         headers: new Headers({ 'Content-Type':  'application/json' })          
     })
     .then(data => data.json()) 

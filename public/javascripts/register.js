@@ -41,7 +41,7 @@ registerForm.addEventListener('submit', (event) => {
         const body = { username, email, password, avatar };
 
         fetch('/api/users', {
-            method: "POST",
+            method: 'POST',
             body: JSON.stringify(body),
             headers: new Headers({ 'Content-Type':  'application/json' })          
         })

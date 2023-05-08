@@ -209,6 +209,7 @@ const conquerCell = async(request, response) => {
 
 const deleteGame = async(request, response) => {
     const gameId = request.params.id;
+    const { userId } = request.body;
 
     const selectedGame = games.find((game) => game.id === parseInt(gameId));
 
@@ -220,9 +221,10 @@ const deleteGame = async(request, response) => {
                 message: `No existe ningún juego en curso en esa sala de juego.`
             });
     } else {
-        let iGame = games.findIndex((game) => game.id === selectedGame.id);
+        const iPlayer = selectedGame.players.findIndex((player) => player.id === userId);
+        const iGame = games.findIndex((game) => game.id === selectedGame.id);
 
-        if (iGame === -1) {
+        if (iPlayer === -1 || iGame === -1) {
             response
                 .status(404)
                 .json({
@@ -230,11 +232,20 @@ const deleteGame = async(request, response) => {
                     message: `Ha ocurrido un error inesperado.`
                 });
         } else {
-            games.splice(iGame, 1);
+            let updateGame = selectedGame;
+            updateGame.players[iPlayer] = {};
+            games[iGame] = updateGame;
+
+            let message = `El jugador ${iPlayer + 1} ha salido de la partida.`;
+            
+            if (!updateGame.players[0].id && !updateGame.players[1].id) {
+                message = `Todos los jugadores han abandonado la sala y el juego ha sido eliminado.`;
+                games.splice(iGame, 1);
+            }
 
             response.status(200).json({
                 status: 200,
-                message: `El juego ha finalizado y ha sido eliminado.`
+                message
             });
         }
     }
