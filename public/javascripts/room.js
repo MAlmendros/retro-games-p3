@@ -147,7 +147,11 @@ document.getElementById('btn-leave').addEventListener('click', () => {
     })
     .then(data => data.json()) 
     .then(response => {
-        if (response.status === 200) {
+        console.log(response);
+        if (response.code && response.code === 'FINAL') {
+            redirectTo();
+        } else if (response.code && response.code === 'LEAVE') {
+            socket.emit(`start-${userInfo.room.id}`, response.game);
             redirectTo();
         }
     })
@@ -159,11 +163,19 @@ const userInfo = JSON.parse(window.localStorage.getItem('retroGamesUser'));
 socket.on(`start-${userInfo.room.id}`, (game) => {
     let playersCount = 0;
 
+    roomBoard.classList.add('d-none');
+    roomPlayerInfo.innerHTML = 'Esperando a tu rival...';
+    roomPlayerScore[0].innerHTML = `0 (0%)`;
+    roomPlayerScore[1].innerHTML = `0 (0%)`;
+
     if (game && game.players && game.players[0].id) {
         roomPlayerName[0].innerHTML = game.players[0].username;
         document.getElementById('avatar-0').setAttribute('src', '/images/' + game.players[0].avatar + '.jpg');
         roomPlayer[0].classList.remove('d-none');
         playersCount++;
+    } else {
+        roomPlayerName[0].innerHTML = 'Jugador 1';
+        document.getElementById('avatar-0').setAttribute('src', '/images/avatar-0.jpg');
     }
 
     if (game && game.players && game.players[1].id) {
@@ -171,11 +183,22 @@ socket.on(`start-${userInfo.room.id}`, (game) => {
         document.getElementById('avatar-1').setAttribute('src', '/images/' + game.players[1].avatar + '.jpg');
         roomPlayer[1].classList.remove('d-none');
         playersCount++;
+    } else {
+        roomPlayerName[1].innerHTML = 'Jugador 2';
+        document.getElementById('avatar-1').setAttribute('src', '/images/avatar-0.jpg');
+
     }
 
     if (playersCount === 2) {
         roomButtonLeave.classList.add('d-none');
         roomBoard.classList.add('d-none');
+        
+        var canvasList = document.querySelectorAll('.cell canvas');
+        canvasList.forEach((canvas, index) => {
+            const context = canvas.getContext('2d');
+            context.fillStyle = '#FFF';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+        });
         
         setTimeout(() => {
             roomPlayerInfo.innerHTML = '¡Preparados!';

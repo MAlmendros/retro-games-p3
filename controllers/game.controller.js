@@ -222,6 +222,7 @@ const deleteGame = async(request, response) => {
             });
     } else {
         const iPlayer = selectedGame.players.findIndex((player) => player.id === userId);
+        const iRival = selectedGame.players.findIndex((player) => player.id !== userId);
         const iGame = games.findIndex((game) => game.id === selectedGame.id);
 
         if (iPlayer === -1 || iGame === -1) {
@@ -234,19 +235,31 @@ const deleteGame = async(request, response) => {
         } else {
             let updateGame = selectedGame;
             updateGame.players[iPlayer] = {};
-            games[iGame] = updateGame;
 
-            let message = `El jugador ${iPlayer + 1} ha salido de la partida.`;
+            console.log(updateGame);
             
             if (!updateGame.players[0].id && !updateGame.players[1].id) {
-                message = `Todos los jugadores han abandonado la sala y el juego ha sido eliminado.`;
                 games.splice(iGame, 1);
-            }
 
-            response.status(200).json({
-                status: 200,
-                message
-            });
+                response.status(200).json({
+                    status: 200,
+                    code: 'FINAL',
+                    message: `Todos los jugadores han abandonado la sala y el juego ha sido eliminado.`
+                });
+            } else {
+                updateGame.players[iRival] = {
+                    ...updateGame.players[iRival],
+                    cells: [],
+                    score: 0
+                };
+                games[iGame] = updateGame;
+
+                response.status(200).json({
+                    status: 200,
+                    code: 'LEAVE',
+                    game: updateGame
+                });
+            }
         }
     }
 }
