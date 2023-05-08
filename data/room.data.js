@@ -2,7 +2,7 @@ let rooms = [
     {
         id: 1,
         name: 'Sala de Juego 1',
-        limit: 4,
+        limit: 2,
         players: []
     },
     {
