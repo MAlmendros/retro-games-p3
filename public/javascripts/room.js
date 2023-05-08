@@ -148,19 +148,7 @@ document.getElementById('btn-leave').addEventListener('click', () => {
     .then(data => data.json()) 
     .then(response => {
         if (response.status === 200) {
-            fetch('/api/rooms/remove-player', {
-                method: 'POST',
-                body: JSON.stringify(body),
-                headers: new Headers({ 'Content-Type':  'application/json' })          
-            })
-            .then(data => data.json()) 
-            .then(response => {
-                if (!response.status) {
-                    window.localStorage.setItem('retroGamesUser', JSON.stringify({ ...userInfo, room: {} }));
-                    window.location.href = '/';
-                }
-            })
-            .catch(error => {});
+            redirectTo();
         }
     })
     .catch(error => {});
@@ -186,6 +174,7 @@ socket.on(`start-${userInfo.room.id}`, (game) => {
     }
 
     if (playersCount === 2) {
+        roomButtonLeave.classList.add('d-none');
         roomBoard.classList.add('d-none');
         
         setTimeout(() => {
