@@ -64,18 +64,28 @@ const createGame = async(request, response) => {
         };
 
         const iPlayer = selectedRoom.players.findIndex((player) => player.id === userId);
-        newGame.players[iPlayer] = {
-            id: selectedRoom.players[iPlayer].id,
-            username: selectedRoom.players[iPlayer].username,
-            avatar: selectedRoom.players[iPlayer].avatar,
-            color: iPlayer === 0 ? '#007BFF' : '#DC3545',
-            cells: [],
-            score: 0
-        };
 
-        games.push(newGame);
+        if (iPlayer === -1) {
+            response
+                .status(404)
+                .json({
+                    status: 404,
+                    message: `El usuario no existe, revise sus credenciales`
+                });
+        } else {
+            newGame.players[iPlayer] = {
+                id: selectedRoom.players[iPlayer].id,
+                username: selectedRoom.players[iPlayer].username,
+                avatar: selectedRoom.players[iPlayer].avatar,
+                color: iPlayer === 0 ? '#007BFF' : '#DC3545',
+                cells: [],
+                score: 0
+            };
 
-        response.status(200).json(newGame);
+            games.push(newGame);
+
+            response.status(200).json(newGame);
+        }
     }
 }
 
@@ -153,10 +163,6 @@ const conquerCell = async(request, response) => {
             const controlLength = selectedGame.players[iPlayer].cells.length === 0;
             let controlAdjacent = selectedGame.players[iPlayer].cells.filter((cell) => cells[`${cell}`].includes(cellId)).length;
             
-            console.log(controlRival);
-            console.log(controlLength);
-            console.log(controlAdjacent);
-
             if (controlRival) {
                 response
                     .status(404)
@@ -216,7 +222,7 @@ const deleteGame = async(request, response) => {
     } else {
         let iGame = games.findIndex((game) => game.id === selectedGame.id);
 
-        if (iGame === null) {
+        if (iGame === -1) {
             response
                 .status(404)
                 .json({
