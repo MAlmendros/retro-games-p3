@@ -4,6 +4,9 @@ const registerFormFieldsError = document.querySelectorAll('.form-field-error');
 const registerResponseError = document.querySelector('.response-error');
 const registerResponseErrorMessage = document.querySelector('.response-error-message');
 
+const registerResponseSuccess = document.querySelector('.response-success');
+const registerResponseSuccessMessage = document.querySelector('.response-error-success');
+
 if (window.localStorage.getItem('retroGamesUser') !== null) {
     window.location.href = '/';
 }
@@ -25,6 +28,10 @@ registerForm.addEventListener('submit', (event) => {
     registerResponseErrorMessage.innerHTML = '';
     registerResponseError.classList.remove('d-flex');
     registerResponseError.classList.add('d-none');
+    
+    // Reseteamos el 'div' de error de respuesta de la llamada de register.
+    registerResponseSuccess.classList.remove('d-flex');
+    registerResponseSuccess.classList.add('d-none');
 
     const registerData = new FormData(registerForm);
     const avatar = registerData.get('avatar');
@@ -53,7 +60,12 @@ registerForm.addEventListener('submit', (event) => {
                 registerResponseError.classList.add('d-flex');
             }
             else {
-                window.location.href = '/login';
+                registerResponseSuccess.classList.remove('d-none');
+                registerResponseSuccess.classList.add('d-flex');
+        
+                setTimeout(() => {
+                    window.location.href = '/login';
+                }, 3000);
             }
         })
         .catch(error => {
