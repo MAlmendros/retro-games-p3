@@ -33,8 +33,8 @@ io.on('connection', (socket) => {
         io.sockets.emit('start', (game))
     });
 
-    socket.on('game', (cellInfo) => {
-        io.sockets.emit('game', (cellInfo))
+    socket.on('game', (info) => {
+        io.sockets.emit('game', (info))
     });
 });
 

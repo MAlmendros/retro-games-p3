@@ -170,22 +170,32 @@ socket.on('start', (game) => {
     }
 });
 
-socket.on('game', (cellInfo) => {
-    console.log('cellInfo');
-    console.log('---------------------------');
-    console.log(cellInfo);
-    console.log('---------------------------');
+socket.on('game', (info) => {
+    const { game, cellId, iPlayer } = info;
+    const player = game.players[iPlayer];
 
-    // document.getElementById(`canvas-${cellInfo.cellId - 1}`).classList.add(`cell-${cellInfo.color}`);
+    console.log('game');
+    console.log('-------------------');
 
-    const canvas = canvasList[cellInfo.cellId - 1];
+    const canvas = canvasList[cellId - 1];
     let context = canvas.getContext('2d');
-    context.fillStyle = cellInfo.color;
+    context.fillStyle = player.color;
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    canvas.addEventListener('mousedown', (event) => {
-        conquerCell(cellInfo.cellId + 1);
-    });
+    roomPlayerScore[iPlayer].innerHTML = `${player.score} (${player.score * 4}%)`;
 
-    roomPlayerScore[cellInfo.scoreIndex].innerHTML = `${cellInfo.score} (${cellInfo.score * 4}%)`;
+    const scores = game.players.map((player) => player.score);
+    const totalScore = scores[0] + scores[1];
+
+    console.log(scores);
+
+    if (totalScore === 25) {
+        const index = scores[0] > scores[1] ? 0 : 1;
+        const color = index === 0 ? 'blue' : 'red';
+        const winner = game.players[index];
+
+        roomPlayerInfo.innerHTML = `¡El juego ha finalizado! Ganador: <span class='score-${color}'>${winner.username}</span>.`;
+    }
+
+    console.log('-------------------');
 });

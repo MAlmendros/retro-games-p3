@@ -149,6 +149,7 @@ const conquerCell = async(request, response) => {
             const iRival = selectedGame.players.findIndex((player) => player.id !== userId);
 
             const controlRival = selectedGame.players[iRival].cells.includes(cellId);
+            const controlPlayer = selectedGame.players[iPlayer].cells.includes(cellId);
             const controlLength = selectedGame.players[iPlayer].cells.length === 0;
             let controlAdjacent = selectedGame.players[iPlayer].cells.filter((cell) => cells[`${cell}`].includes(cellId)).length;
             
@@ -157,6 +158,13 @@ const conquerCell = async(request, response) => {
             console.log(controlAdjacent);
 
             if (controlRival) {
+                response
+                    .status(404)
+                    .json({
+                        status: 404,
+                        message: `Esta celda ya ha sido conquistada por otro jugador`
+                    });
+            } else if (controlPlayer) {
                 response
                     .status(404)
                     .json({
@@ -184,10 +192,9 @@ const conquerCell = async(request, response) => {
                 response
                     .status(200)
                     .json({
+                        game: updateGame,
                         cellId,
-                        scoreIndex: iPlayer,
-                        color: selectedPlayer.color,
-                        score: selectedPlayer.score + 1
+                        iPlayer
                     });
             }
         }
