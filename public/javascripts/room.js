@@ -78,7 +78,7 @@ function createGame(userInfo) {
             redirectTo();
         }
         else {
-            socket.emit('start', (response));
+            socket.emit(`start-${userInfo.room.id}`, (response));
         }
     })
     .catch(error => {
@@ -103,7 +103,7 @@ function updateGame(userInfo) {
             redirectTo();
         }
         else {
-            socket.emit('start', (response));
+            socket.emit(`start-${userInfo.room.id}`, (response));
         }
     })
     .catch(error => {
@@ -127,7 +127,7 @@ function conquerCell(cellId) {
     .then(data => data.json()) 
     .then(response => {
         if (!response.status) {
-            socket.emit('game', (response));
+            socket.emit(`game-${userInfo.room.id}`, (response));
         }
     })
     .catch(error => {
@@ -166,7 +166,9 @@ document.getElementById('btn-leave').addEventListener('click', () => {
     .catch(error => {});
 });
 
-socket.on('start', (game) => {
+const userInfo = JSON.parse(window.localStorage.getItem('retroGamesUser'));
+
+socket.on(`start-${userInfo.room.id}`, (game) => {
     let playersCount = 0;
 
     if (game && game.players && game.players[0].id) {
@@ -201,7 +203,7 @@ socket.on('start', (game) => {
     }
 });
 
-socket.on('game', (info) => {
+socket.on(`game-${userInfo.room.id}`, (info) => {
     const { game, cellId, iPlayer } = info;
     const player = game.players[iPlayer];
 

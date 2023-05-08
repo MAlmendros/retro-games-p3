@@ -29,12 +29,36 @@ io.on('connection', (socket) => {
         io.sockets.emit('home', (rooms))
     });
 
-    socket.on('start', (game) => {
-        io.sockets.emit('start', (game))
+    socket.on('start-1', (game) => {
+        io.sockets.emit('start-1', (game))
     });
 
-    socket.on('game', (info) => {
-        io.sockets.emit('game', (info))
+    socket.on('game-1', (info) => {
+        io.sockets.emit('game-1', (info))
+    });
+
+    socket.on('start-2', (game) => {
+        io.sockets.emit('start-2', (game))
+    });
+
+    socket.on('game-2', (info) => {
+        io.sockets.emit('game-2', (info))
+    });
+
+    socket.on('start-3', (game) => {
+        io.sockets.emit('start-3', (game))
+    });
+
+    socket.on('game-3', (info) => {
+        io.sockets.emit('game-3', (info))
+    });
+
+    socket.on('start-4', (game) => {
+        io.sockets.emit('start-4', (game))
+    });
+
+    socket.on('game-4', (info) => {
+        io.sockets.emit('game-4', (info))
     });
 });
 
