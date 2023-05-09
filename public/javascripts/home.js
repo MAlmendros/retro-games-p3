@@ -27,8 +27,42 @@ if (window.localStorage.getItem('retroGamesUser') === null) {
 }
 
 document.getElementById('btn-logout').addEventListener('click', () => {
-    window.localStorage.removeItem('retroGamesUser');
-    window.location.href = '/login';
+    const userInfo = JSON.parse(window.localStorage.getItem('retroGamesUser'));
+
+    if (userInfo.room && userInfo.room.id) {
+        const body = { roomId: userInfo.room.id, userId: userInfo.id };
+    
+        fetch('/api/rooms/remove-player', {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: new Headers({ 'Content-Type':  'application/json' })          
+        })
+        .then(data => data.json()) 
+        .then(response => {
+            if (response.status && response.status !== 200) {
+                homeResponseErrorMessage.innerHTML = response.message;
+                homeResponseError.classList.remove('d-none');
+                homeResponseError.classList.add('d-flex');
+            }
+            else {
+                homeResponseErrorMessage.innerHTML = '';
+                homeResponseError.classList.remove('d-flex');
+                homeResponseError.classList.add('d-none');
+                
+                window.localStorage.removeItem('retroGamesUser');
+                window.location.href = '/login';
+            }
+        })
+        .catch(error => {
+            homeResponseErrorMessage.innerHTML = error;
+            homeResponseError.classList.remove('d-none');
+            homeResponseError.classList.add('d-flex');
+        });
+
+    } else {
+        window.localStorage.removeItem('retroGamesUser');
+        window.location.href = '/login';
+    }
 });
 
 document.getElementById('btn-play').addEventListener('click', () => {
